@@ -1,0 +1,22 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,body{
+    height: 100%;
+    width: 100%;
+}
+
+body{
+    background-color: black;
+}
+
+.cursor-follower{
+    height: 20px;
+    width: 20px;
+    background-color: wheat;
+    border-radius: 50%;
+    position: absolute;
+}
