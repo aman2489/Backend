@@ -5,7 +5,7 @@ import axios from "axios"
 function App() {
   const [notes, setNotes] = useState([]);
 
-  const baseUrl = "http://localhost:3000/"
+  const baseUrl = "https://backend-whua.onrender.com/"
   function fetchNotes(){
     axios.get(`${baseUrl}api/notes`)
     .then(res => {
