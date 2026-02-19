@@ -6,6 +6,12 @@
 
 ==> Post
     ==> create
+        {
+            caption: String,
+            img_url: String,
+            user: String,
+            createdAt: date-time
+        }
     ==> see the feed
     ==> like post (collection types)
     ==> save post
