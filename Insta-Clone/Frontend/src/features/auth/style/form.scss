@@ -11,7 +11,8 @@ main{
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
-    min-width: 400px;
+    min-width: 300px;
+    max-width: 400px;
     form{
         display: flex;
         flex-direction: column;
