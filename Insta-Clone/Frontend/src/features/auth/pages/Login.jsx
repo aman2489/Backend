@@ -1,7 +1,6 @@
-import { useState } from "react";
+import { use, useState } from "react";
 import "../style/form.scss";
 import { Link, useNavigate } from "react-router";
-import axios from "axios";
 import { useAuth } from "../hooks/useAuth";
 
 
@@ -15,20 +14,20 @@ const Login = () => {
 
     if(loading){
       return(
-        <h1>Loading...</h1>
+        <main>
+          <h1>Loading...</h1>
+        </main>
       )
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
-        handleLogin(username, password).then(res => {
-          console.log(res);
-          setUsername("");
-          setPassword("");
-          navigate("/");
-        })
+        const user = await handleLogin(username, password);
+
+        console.log("User logged in.", user);
         
+        navigate("/");
     }
 
   return (
@@ -50,9 +49,9 @@ const Login = () => {
           onInput={(e) => {setPassword(e.target.value)}}
           value={password}
           />
-          <button type="submit">Login</button>
+          <button type="submit" className="button primary-button">Login</button>
         </form>
-        <p>Don't have an account? <Link to="/register">Register</Link></p>
+        <p>Don't have an account? <Link to="/register">Create One.</Link></p>
       </div>
     </main>
   );

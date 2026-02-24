@@ -1,6 +1,7 @@
 import { RouterProvider } from "react-router"
 import { router } from "./app.routes"
-import "./style.scss"
+import "./features/shared/global.scss"
+import "./features/shared/button.scss"
 import { AuthProvider } from "./features/auth/auth.context.jsx"
 
 function App() {
