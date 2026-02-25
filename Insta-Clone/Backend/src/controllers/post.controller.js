@@ -2,6 +2,7 @@ const postModel = require("../models/post.model");
 const ImageKit = require("@imagekit/nodejs");
 const {toFile} = require("@imagekit/nodejs");
 const likesModel = require("../models/likes.model");
+const likeModel = require("../models/likes.model");
 
 const imageKit = new ImageKit({
     privateKey: process.env.IMAGEKIT_PRIVATE_KEY
@@ -108,9 +109,57 @@ async function likePostController(req, res){
     })
 }
 
+async function unLikePostController(req, res) {
+    const username = req.user.username;
+    const postId = req.params.postId;
+
+    const isLiked = await likeModel.findOne({
+        post : postId,
+        user: username
+    })
+
+    if(!isLiked){
+        return res.status(400).json({message: "Post is not liked yet"});
+    }
+
+    await likeModel.findOneAndDelete({
+        post: postId,
+        user: username
+    })
+
+    return res.status(200).json({
+        message: "Post Unliked Successfully."
+    })
+
+}
+
+async function getFeedController(req, res) {
+
+    const user = req.user;
+
+    const posts = await Promise.all((await postModel.find({}).populate("user").lean()).map( async (post) => {
+
+        const isLiked = await likeModel.findOne({
+            user: user.username,
+            post: post._id
+        })
+
+        post.isLiked = Boolean(isLiked);
+
+        return post;
+    }));
+
+    res.status(200).json({
+        message: "Posts fetched successfully.",
+        posts
+    })
+}
+
 module.exports = {
     createPostController,
     getPostsController,
     getPostDetailsController,
-    likePostController
+    likePostController,
+    unLikePostController,
+    getFeedController
 }

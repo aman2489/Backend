@@ -1,0 +1,80 @@
+.feed-page{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    .feed{
+        max-width: 350px;
+        width: 100%;
+
+        .posts{
+            width: 100%;
+        }
+
+        .post{
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            // background-color: #603e2a;
+            // padding-inline: 0.5rem;
+            padding-block: 0.5rem;
+            margin-bottom: 1.5rem;
+
+            .user{
+                display: flex;
+                gap: 0.7rem;
+                align-items: center;
+                padding-inline: 0.2rem;
+                
+                .img-wrapper{
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    border-radius: 50%;
+                    border: 2.5px solid rgba(255, 0, 0, 0);
+                    background: conic-gradient(from 45deg,rgb(251, 201, 22), rgb(129, 9, 249), rgb(251, 152, 22)) border-box;
+                    img{
+                    width: 1.5rem;
+                    aspect-ratio: 1/1;
+                    border-radius: 50%;
+                }
+                }
+            }
+
+            img{
+                width: 100%;
+                border-radius: 0.5rem;
+            }
+            
+            .icons{
+                display: flex;
+                justify-content: space-between;
+                padding-inline: 0.5rem;
+
+                .like{
+                    color: red;
+                }
+
+                .left{
+                    display: flex;
+                    gap: 0.8rem;
+                }
+
+                button{
+                    width: 1.5rem;
+                    background-color: transparent;
+                    outline: none;
+                    border: none;
+                    color: whitesmoke;
+                }
+            }
+
+            .bottom{
+                width: 100%;
+                padding-inline: 0.5rem;
+            }
+        }
+    }
+}
