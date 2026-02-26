@@ -1,4 +1,14 @@
+@font-face {
+    font-family: insta;
+    src: url("./Fontspring-DEMO-blue_vinyl_bold_ps_ot.otf");
+}
+
 .nav-bar {
+    
+    p{
+        font-family: insta;
+        font-size: 1.3rem;
+    }
     max-width: 350px;
     width: 100%;
     display: flex;
