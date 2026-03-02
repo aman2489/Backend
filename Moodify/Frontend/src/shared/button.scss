@@ -1,0 +1,28 @@
+
+.btn{
+    border: none;
+    outline: none;
+    padding-inline: 1rem;
+    padding-block: 1.5rem;
+    border-radius: 1rem;
+    font-size: 1.2rem;
+    transition: all 0.3s ease-in-out;
+
+    &:active{
+        scale: 0.95;
+    }
+    &:hover{
+        cursor: pointer;
+        letter-spacing: 0.1rem;
+    }
+    
+    
+    &.primary-btn{
+        background-color: rgb(0, 173, 0);
+        color: black;
+        
+        &:hover{
+            background-color: rgb(0, 151, 0);
+        }
+    }
+}

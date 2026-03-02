@@ -1,14 +1,16 @@
-
-import './App.css'
-import FaceExpression from './features/Expression/components/FaceExpression'
+import { RouterProvider } from 'react-router'
+import { router } from './app.routes'
+import "./shared/global.scss"
+import "./shared/button.scss"
+import { AuthProvider } from './features/auth/authContext'
 
 function App() {
   
 
   return (
-    <>
-      <FaceExpression/>
-    </>
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
   )
 }
 

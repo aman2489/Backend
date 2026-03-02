@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { init ,detect } from "../utils/utils";
+import "../styles/cam.scss"
+import Nav from "../../../shared/components/nav";
 
 export default function FaceExpression() {
     const videoRef = useRef(null);
@@ -30,14 +32,17 @@ export default function FaceExpression() {
     }, []);
 
     return (
-        <div style={{ textAlign: "center" }}>
+        <main>
+            <Nav/>
+            <div className="cam-page-div" style={{ textAlign: "center" }}>
             <video
                 ref={videoRef}
                 style={{ width: "400px", borderRadius: "12px" }}
                 playsInline
             />
             <h2>{expression}</h2>
-            <button onClick={() => {detect({videoRef, landmarkerRef, setExpression})}} >Detect expression</button>
+            <button className="btn primary-btn" onClick={() => {detect({videoRef, landmarkerRef, setExpression})}} >Detect expression</button>
         </div>
+        </main>
     );
 }
