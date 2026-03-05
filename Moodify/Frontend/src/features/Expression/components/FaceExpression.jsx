@@ -3,7 +3,7 @@ import { init ,detect } from "../utils/utils";
 import "../styles/cam.scss"
 import Nav from "../../../shared/components/nav";
 
-export default function FaceExpression() {
+export default function FaceExpression({onClick = () => {}}) {
     const videoRef = useRef(null);
     const landmarkerRef = useRef(null);
     const streamRef = useRef(null);
@@ -31,9 +31,13 @@ export default function FaceExpression() {
         };
     }, []);
 
+    async function handleClick() {
+        const expression = detect({videoRef, landmarkerRef, setExpression})
+        onClick(expression);
+    }
+
     return (
         <main>
-            <Nav/>
             <div className="cam-page-div" style={{ textAlign: "center" }}>
             <video
                 ref={videoRef}
@@ -41,7 +45,7 @@ export default function FaceExpression() {
                 playsInline
             />
             <h2>{expression}</h2>
-            <button className="btn primary-btn" onClick={() => {detect({videoRef, landmarkerRef, setExpression})}} >Detect expression</button>
+            <button className="btn primary-btn" onClick={handleClick} >Detect expression</button>
         </div>
         </main>
     );
