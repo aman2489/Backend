@@ -1,6 +1,7 @@
 import { Link } from "react-router";
 import "../styles/form.scss";
 import { useState } from "react";
+import FormGroup from "../components/FormGroup";
 
 const Register = () => {
   const [username, setUsername] = useState("");
@@ -21,30 +22,29 @@ const Register = () => {
       <div className="form-container">
         <h1>Register</h1>
         <form onSubmit={handleSubmit}>
-          <input
-            type="text"
+          <FormGroup
+          label="Username"
             name="username"
             placeholder="Enter Username"
-            required
             value={username}
-            onInput={(e) => {
+            onChange={(e) => {
               setUsername(e.target.value);
             }}
           />
-          <input type="text" 
+          <FormGroup
+          label="Email" 
           name="email" 
           placeholder="Enter Email" 
-          required 
           value={email}
-          onInput={(e) => {setEmail(e.target.value)}}
+          onChange={(e) => {setEmail(e.target.value)}}
           />
-          <input
+          <FormGroup
+            label="Password"
             type="password"
             name="password"
             placeholder="Enter Password"
-            required
             value={password}
-            onInput={(e) => {setPassword(e.target.value)}}
+            onChange={(e) => {setPassword(e.target.value)}}
           />
           <button type="submit" className="btn primary-btn">
             Register

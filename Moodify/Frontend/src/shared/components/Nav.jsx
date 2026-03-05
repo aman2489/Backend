@@ -1,8 +1,18 @@
-import {Link} from "react-router"
+import { useNavigate } from "react-router"
 import "../nav.scss"
+import { useAuth } from "../../features/auth/hooks/useAuth"
 
 
 const Nav = () => {
+
+  const {user, handleLogout} = useAuth();
+
+  // console.log(user.user.username);
+
+  const handleClick = async () => {
+    await handleLogout();
+  }
+
   return (
     <nav className="nav-bar">
       <div className="logo">
@@ -10,8 +20,8 @@ const Nav = () => {
         <h2>Moodify</h2>
       </div>
         <div className="buttons">
-            <Link to="/login" className="pri">Log in</Link>
-        <Link to="/register">Sign up</Link>
+            {user && <p>{user.user.username}</p>}
+            {user && <button onClick={handleClick} className="pri">Log out</button>}
         </div>
     </nav>
   )

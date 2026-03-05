@@ -25,23 +25,19 @@ export function useAuth() {
 
         const data = await login(username, password);
 
-        setUser(data.user.username);
+        setUser(data);
 
         setLoading(false);
-
-        return(data);
     }
 
     const handleLogout = async () => {
         setLoading(true);
 
-        const data = await logout();
+        await logout();
 
         setUser(null);
 
         setLoading(false);
-        
-        return data;
     }
 
     const handleGetMe = async() => {
@@ -58,5 +54,5 @@ export function useAuth() {
         handleGetMe();
     }, [])
 
-    return {user, loading, handleLogin, handleRegister}
+    return {user, loading, handleLogin, handleRegister, handleLogout}
 }

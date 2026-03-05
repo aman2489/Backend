@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router";
 import { useState } from "react";
 import { useAuth } from "../hooks/useAuth";
-
+import FormGroup from "../components/FormGroup";
 
 
 const Login = () => {
@@ -27,25 +27,27 @@ const Login = () => {
   }
 
   return (
-    <main>
+    <>
+      <main>
       <div className="form-container">
         <h1>Login</h1>
         <form onSubmit={handleSubmit}>
-          <input
-            type="text"
+          <FormGroup
+            label="Username"
             name="username"
             placeholder="Enter Username"
-            required
             value={username}
-            onInput={(e) => {setUsername(e.target.value)}}
+            onChange={(e) => {setUsername(e.target.value)}}
+            required
           />
-          <input
+          <FormGroup
+          label="Password"
             type="password"
             name="password"
             placeholder="Enter Password"
-            required
             value={password}
-            onInput={(e) => {setPassword(e.target.value)}}
+            onChange={(e) => {setPassword(e.target.value)}}
+            required
           />
           <button type="submit" className="btn primary-btn">
             Login
@@ -56,6 +58,7 @@ const Login = () => {
         </form>
       </div>
     </main>
+    </>
   );
 };
 
