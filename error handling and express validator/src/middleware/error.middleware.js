@@ -9,7 +9,7 @@ export default function handleError (err, req, res, next) {
         message: message
     }
 
-    if(process.env.NODE_ENVIORNMENT === "development"){
+    if(process.env.NODE_ENV === "development"){
         response.stack = err.stack
     }
 
