@@ -2,38 +2,181 @@ import userModel from "../models/user.model.js";
 import jwt from "jsonwebtoken";
 import { sendEmail } from "../services/mail.service.js";
 
+/**
+ * @desc Register a new user
+ * @route POST /api/auth/register
+ * @access Public
+ * @body { username, email, password }
+ */
 export async function register(req, res) {
-    const {username, email, password} = req.body;
+  const { username, email, password } = req.body;
 
-    const isUserAlreadyExists = await userModel.findOne({
-        $or: [{email}, {username}]
-    })
+  const isUserAlreadyExists = await userModel.findOne({
+    $or: [{ email }, { username }],
+  });
 
-    if(isUserAlreadyExists) {
-        return res.status(409).json({
-            message: "User with this email or username already exists",
-            sucess: false,
-            err: "User already exists"
-        })
+  if (isUserAlreadyExists) {
+    return res.status(409).json({
+      message: "User with this email or username already exists",
+      success: false,
+      err: "User already exists",
+    });
+  }
+
+  const user = await userModel.create({ username, email, password });
+
+  const emailVerificationToken = jwt.sign(
+    {
+      email: user.email,
+    },
+    process.env.JWT_SECRET,
+  );
+
+  await sendEmail({
+    to: user.email,
+    subject: "Welcome to Perplexity",
+    html: ` <p>Hello ${user.username},</p>
+                <p>Thank you for registering at Perplexity! We're excited to have you on board! If you have any questions or need assistance, feel free to reach out.</p>
+                <p>Please verify the email by clicking the link below:</p>
+                <a href="http://localhost:3000/api/auth/verify-email?token=${emailVerificationToken}">Verify Email</a>
+                <p>Best regards,<br>The Perplexity Team</p>`,
+  });
+
+  return res.status(201).json({
+    message: "User registered successfully",
+    success: true,
+    user: {
+      id: user._id,
+      username: user.username,
+      email: user.email,
+    },
+  });
+}
+
+/**
+ * @desc Verify email address
+ * @route GET /api/auth/verify-email?token=...
+ * @access Public
+ * @query { token }
+ */
+export async function verifyEmail(req, res) {
+  const { token } = req.query;
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    const user = await userModel.findOne({ email: decoded.email });
+
+    if (!user) {
+      return res.status(400).json({
+        message: "Invalid User",
+        success: false,
+        err: "User not found",
+      });
     }
 
-    const user = await userModel.create({username, email, password});
-    await sendEmail({
-        to: user.email,
-        subject: "Welcome to Perplexity",
-        html: ` <p>Hello ${user.username},</p>
-                <p>Thank you for registering at Perplexity! We're excited to have you on board! If you have any questions or need assistance, feel free to reach out.
-                </p><p>Best regards,<br>The Perplexity Team</p>`
-    })
+    user.verified = true;
 
-    return res.status(201).json({
-        message: "User registered successfully",
-        sucess: true,
-        user: {
-            id: user._id,
-            username: user.username,
-            email: user.email
-        }
-    })
+    await user.save();
+
+    const html = `<h1>Email Verified Successfully!</h1>
+                  <p>Your email has been verified. You can now log in to your account.</p>
+                  <a href="http://localhost:3000/login">Go to Login</a>`;
+
+    return res.send(html);
+  } catch (err) {
+    return res.status(400).json({
+      message: "Invalid or expired token",
+      success: false,
+      err: "Invalid token",
+    });
+  }
+}
+
+/**
+ * @desc Login a user
+ * @route POST /api/auth/login
+ * @access Public
+ * @body { email, username, password }
+ */
+export async function login(req, res) {
+  const { email,password } = req.body;
+
+  const user = await userModel.findOne({email});
+
+  if (!user) {
+    return res.status(400).json({
+      message: "Invalid email or username",
+      success: false,
+      err: "User not found",
+    });
+  }
+
+  const isPasswordValid = await user.comparePassword(password);
+
+  if (!isPasswordValid) {
+    return res.status(400).json({
+      message: "Invalid password",
+      success: false,
+      err: "Invalid password",
+    });
+  }
+
+
+  if (!user.verified) {
+    return res.status(400).json({
+      message: "Email not verified",
+      success: false,
+      err: "Please verify your email before logging in",
+    });
+  }
+
+  const token = jwt.sign(
+    {
+      id: user._id,
+      username: user.username,
+    },
+    process.env.JWT_SECRET,
+    { expiresIn: "7d" },
+  );
+
+  res.cookie("token", token);
+
+  return res.status(200).json({
+    message: "Login successful",
+    success: true,
+    user: {
+      id: user._id,
+      username: user.username,
+      email: user.email,
+    }
+  });
+}
+
+
+/**
+ * @desc Get current logged in user details
+ * @route GET /api/auth/get-me
+ * @access Private
+ */
+export async function getMe(req, res) {
+    const userId = req.user.id;
+
+    const user = await userModel.findById(userId).select("-password");
+
+    if (!user) {
+        return res.status(404).json({
+            message: "User not found",
+            success: false,
+            err: "User not found",
+        });
+    }
+
+    return res.status(200).json({
+        message: "User fetched successfully",
+        success: true,
+        user,
+    });
 
 }
+

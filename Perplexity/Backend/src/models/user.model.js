@@ -21,7 +21,7 @@ const userSchema = new mongoose.Schema(
       required: [true, "Password is required"],
       minlength: 6,
     },
-    varified: {
+    verified: {
       type: Boolean,
       default: false,
     },
@@ -30,7 +30,7 @@ const userSchema = new mongoose.Schema(
 );
 
 userSchema.pre('save', async function () {
-    if (!this.isModified('password')) return next();
+    if (!this.isModified('password')) return;
     this.password = await bcrypt.hash(this.password, 10);
 });
 
