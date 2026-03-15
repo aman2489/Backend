@@ -12,4 +12,6 @@ userRouter.post("/follow/accept/:username", identifyUser, userController.acceptF
 
 userRouter.post("/follow/reject/:username", identifyUser, userController.rejectFollowController);
 
+userRouter.post("/profile", identifyUser, userController.profileController)
+
 module.exports = userRouter;

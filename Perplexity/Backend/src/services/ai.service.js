@@ -8,9 +8,9 @@ const model = new ChatMistralAI({
 })
 
 
-export async function testAi() {
-    model.invoke("What is the capital of india")
-        .then((response) => {
-            console.log(response.text);
-        })
-}
+// export async function testAi() {
+//     model.invoke("What is the capital of india")
+//         .then((response) => {
+//             console.log(response.text);
+//         })
+// }

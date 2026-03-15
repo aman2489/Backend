@@ -1,6 +1,8 @@
 const followModel = require("../models/follow.model");
 const { findOne, findOneAndDelete } = require("../models/post.model");
 const userModel = require("../models/user.model");
+const postModel = require("../models/post.model");
+const { post } = require("../app");
 
 async function followUserController(req, res){
     const followerUsername = req.user.username;
@@ -109,9 +111,25 @@ async function rejectFollowController(req, res){
     return res.status(200).json({message: "Follow Request Rejected Successfully."});
 }
 
+async function profileController(req, res) {
+    const userId = req.user.id;
+    // console.log(userId);
+    const posts = await postModel.find({
+        user: userId
+    }).populate("user").lean();
+
+    console.log(posts);
+
+    return res.status(200).json({
+        message: "User fetched successfully.",
+        posts
+    })
+}
+
 module.exports = {
     followUserController,
     unFollowUserController,
     acceptFollowController,
-    rejectFollowController
+    rejectFollowController,
+    profileController
 }

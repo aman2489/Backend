@@ -20,6 +20,7 @@ export async function login(username, password) {
 
     try{
         const response = await api.post("/login", {username, password});
+        // console.log(response.data.user.username);
         return response.data;
     }
     catch(err){

@@ -1,0 +1,125 @@
+[33mcommit 1223c5560c49410c9a89111023bca454f8a7c5b0[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: aman2489 <aman1100vishnoi@gmail.com>
+Date:   Mon Mar 2 23:50:15 2026 +0530
+
+    added login register in frontend and also added protected component
+
+[33mcommit 6b83851ecb794214198c3f67250410894abd7d3c[m
+Author: aman2489 <aman1100vishnoi@gmail.com>
+Date:   Sat Feb 28 23:15:56 2026 +0530
+
+    implemented redis and token blacklisting with redis
+
+[33mcommit 9d4f2f2c45d66e990fbcf89a2415626297285357[m
+Author: aman2489 <aman1100vishnoi@gmail.com>
+Date:   Sat Feb 28 12:20:41 2026 +0530
+
+    added get-me and logout api, getUser middleware and blaklist in MongoDB
+
+[33mcommit 0472a58e20c7c4d58834be7b739ec9fe161150af[m
+Author: aman2489 <aman1100vishnoi@gmail.com>
+Date:   Fri Feb 27 14:11:37 2026 +0530
+
+    organised code of FaceExpression in frontend with utils folder and file and initiated server and implemented login and register
+
+[33mcommit d875cfae069a5147acb881642c7d6c0cdd700103[m
+Author: aman2489 <aman1100vishnoi@gmail.com>
+Date:   Thu Feb 26 20:32:18 2026 +0530
+
+    researched and initiated moodify project
+
+[33mcommit 0c74d2edfc511c678cf83c8bd1ef34652cb8c6c7[m
+Author: aman2489 <aman1100vishnoi@gmail.com>
+Date:   Wed Feb 25 20:52:23 2026 +0530
+
+    completed project from cohort side added feed and like, unlike
+
+[33mcommit 2396fb8de201b3b174d828ea7f4a1d422ea06173[m
+Author: aman2489 <aman1100vishnoi@gmail.com>
+Date:   Tue Feb 24 19:58:36 2026 +0530
+
+    completed 4 layer architecture of react for auth (login and register)
+
+[33mcommit b66254061dc9de2225a10aee8422ea62217d0d7f[m
+Author: aman2489 <aman1100vishnoi@gmail.com>
+Date:   Tue Feb 24 13:04:58 2026 +0530
+
+    added services,hooks folder and auth.context.jsx file and implemented login
+
+[33mcommit f5c179217a2dab84573c5617cfd7484d3f9755d4[m
+Author: aman2489 <aman1100vishnoi@gmail.com>
+Date:   Mon Feb 23 20:45:36 2026 +0530
+
+    Frontend first day, login, register form and functionlity added without context added routes and router and also handled cors in backend
+
+[33mcommit fda0a9aee525d0e917c97259caaac8dd1a853e9e[m
+Author: aman2489 <aman1100vishnoi@gmail.com>
+Date:   Mon Feb 23 12:34:30 2026 +0530
+
+    added follow request, accept, and reject feature successfully
+
+[33mcommit 56cca5e3cba94efdcb8aad6c6baacba9b0aacd76[m
+Author: aman2489 <aman1100vishnoi@gmail.com>
+Date:   Mon Feb 23 02:07:57 2026 +0530
+
+    completed follow unfollow feature and also added likes feature
+
+[33mcommit a5ad5e11b3fab16fa420ce942a643fe053573a4e[m
+Author: aman2489 <aman1100vishnoi@gmail.com>
+Date:   Sun Feb 22 18:48:53 2026 +0530
+
+    added verifyUser middleware and also created followModel not integrated yet or tested
+
+[33mcommit aad2e04afaf068e04f78eb6302003fcc3677e443[m
+Author: aman2489 <aman1100vishnoi@gmail.com>
+Date:   Sun Feb 22 01:33:03 2026 +0530
+
+    Day 3 complete added get post and post details API
+
+[33mcommit 3b1918c83865f82a94311badd580f1e99338c76a[m
+Author: aman2489 <aman1100vishnoi@gmail.com>
+Date:   Fri Feb 20 22:02:52 2026 +0530
+
+    pushing Day-13 to github
+
+[33mcommit 71032dd7d899757c652967f665429c254e8529e1[m
+Author: aman2489 <aman1100vishnoi@gmail.com>
+Date:   Fri Feb 20 21:59:46 2026 +0530
+
+    moved backend files to the backend folder
+
+[33mcommit 1df6ec6e9115ba91e8675c965de47902d7b47ab1[m
+Author: aman2489 <aman1100vishnoi@gmail.com>
+Date:   Thu Feb 19 20:23:39 2026 +0530
+
+    Day 2 completed, used multer and ImageKit
+
+[33mcommit 9157b1d8d79550f077939a0d3e2a170b549cf191[m
+Author: aman2489 <aman1100vishnoi@gmail.com>
+Date:   Wed Feb 18 20:36:37 2026 +0530
+
+    insta clone day 1 and 1st commit
+
+[33mcommit 0c251d38949b53bc9256f75c208b07975a7134e0[m
+Author: aman2489 <aman1100vishnoi@gmail.com>
+Date:   Wed Feb 18 12:58:25 2026 +0530
+
+    day 14 completed and pushing
+
+[33mcommit ff3e6eadf4d98e8e69d4470700da6254405c8661[m
+Author: aman2489 <aman1100vishnoi@gmail.com>
+Date:   Fri Feb 6 14:35:07 2026 +0530
+
+    auth first class made auth route and created jwt and parsed in cookie and saved
+
+[33mcommit 82557dc4a0276fd0037f3dbb2aa57ff8657386e1[m
+Author: aman2489 <aman1100vishnoi@gmail.com>
+Date:   Wed Feb 4 20:26:15 2026 +0530
+
+    updated the baseUrl
+
+[33mcommit f67f1c2959cfa7a83842540a41f208051fd19b77[m
+Author: aman2489 <aman1100vishnoi@gmail.com>
+Date:   Wed Feb 4 20:01:43 2026 +0530
+
+    pushing backend folder to github

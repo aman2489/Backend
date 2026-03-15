@@ -180,3 +180,6 @@ export async function getMe(req, res) {
 
 }
 
+export async function resendVerification(req, res) {
+  
+}
