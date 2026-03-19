@@ -125,9 +125,9 @@ export async function login(req, res) {
 
   if (!user.verified) {
     return res.status(400).json({
-      message: "Email not verified",
+      message: "Please verify your email before logging in",
       success: false,
-      err: "Please verify your email before logging in",
+      err: "Email not verified",
     });
   }
 
