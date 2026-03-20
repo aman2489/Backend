@@ -4,29 +4,28 @@ import { useChat } from "../hooks/useChat";
 import { useEffect } from "react";
 import { Send, LogOut, Plus, Menu, X } from "lucide-react";
 
+
 const Dashboard = () => {
   const chat = useChat();
-  const [messages, setMessages] = useState([]);
   const [currentMessage, setCurrentMessage] = useState("");
   const [selectedChat, setSelectedChat] = useState(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
+  const chats = useSelector((state) => state.chat.chats);
+  const currentChatId = useSelector((state) => state.chat.currentChatId);
+
+  console.log(chats);
+  
   useEffect(() => {
     chat.initialiseSocketConnection();
   }, []);
-
-  const { user } = useSelector((state) => state.auth);
-
+  
+  
   const handleSendMessage = () => {
     if (currentMessage.trim()) {
       // Add user message
-      setMessages([...messages, { id: Date.now(), type: "user", content: currentMessage }]);
+      chat.handleSendMessage({ message: currentMessage, chatId: currentChatId });
       setCurrentMessage("");
-      
-      // Simulate AI response
-      setTimeout(() => {
-        setMessages((prev) => [...prev, { id: Date.now(), type: "ai", content: "This is an AI response..." }]);
-      }, 500);
     }
   };
 
@@ -37,7 +36,7 @@ const Dashboard = () => {
     }
   };
 
-  const chats = [
+  const title = [
     { id: 1, title: "Chat 1" },
     { id: 2, title: "Chat 1" },
     { id: 3, title: "Chat 1" },
@@ -67,11 +66,11 @@ const Dashboard = () => {
           New Chat
         </button>
 
-        {/* Chats Section */}
+        {/* title Section */}
         <div className="flex-1 overflow-y-auto">
           <h2 className="text-sm font-semibold text-neutral-400 mb-3 px-2">chats</h2>
           <div className="space-y-2">
-            {chats.map((chat) => (
+            {title.map((chat) => (
               <button
                 key={chat.id}
                 onClick={() => setSelectedChat(chat.id)}
@@ -120,11 +119,11 @@ const Dashboard = () => {
           New Chat
         </button>
 
-        {/* Chats Section */}
+        {/* title Section */}
         <div className="flex-1 overflow-y-auto">
-          <h2 className="text-sm font-semibold text-neutral-400 mb-3 px-2">chats</h2>
+          <h2 className="text-sm font-semibold text-neutral-400 mb-3 px-2">title</h2>
           <div className="space-y-2">
-            {chats.map((chat) => (
+            {title.map((chat) => (
               <button
                 key={chat.id}
                 onClick={() => setSelectedChat(chat.id)}
@@ -161,7 +160,7 @@ const Dashboard = () => {
 
         {/* Messages Container */}
         <div className="flex-1 overflow-y-auto p-8 space-y-4">
-          {messages.length === 0 ? (
+          {Object.keys(chats).length === 0 ? (
             <div className="flex items-center justify-center h-full">
               <div className="text-center">
                 <svg className="w-16 h-16 text-teal-500 mx-auto mb-4 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -172,15 +171,15 @@ const Dashboard = () => {
               </div>
             </div>
           ) : (
-            messages.map((msg) => (
+            chats[currentChatId]?.messages.map((msg) => (
               <div
                 key={msg.id}
-                className={`flex ${msg.type === "user" ? "justify-end" : "justify-start"}`}
+                className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
               >
                 <div
                   className={`max-w-lg px-5 py-3 rounded-xl backdrop-blur-sm transition ${
-                    msg.type === "user"
-                      ? "bg-teal-500/20 text-white border border-teal-500/30 rounded-br-none"
+                    msg.role === "user"
+                      ? "bg-teal-500/20 text-white border border-teal-500/30 rounded-br-none "
                       : "bg-white/5 text-neutral-100 border border-white/10 rounded-bl-none"
                   }`}
                 >
