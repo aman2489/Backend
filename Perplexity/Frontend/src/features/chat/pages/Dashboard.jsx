@@ -2,29 +2,37 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { useChat } from "../hooks/useChat";
 import { useEffect } from "react";
-import { Send, LogOut, Plus, Menu, X } from "lucide-react";
-
+import { Send, LogOut, Plus, Menu, X, CloudCog } from "lucide-react";
+import ReactMarkdown from "react-markdown";
+import { useAuth } from "../../auth/hook/useAuth";
+import { useNavigate } from "react-router";
 
 const Dashboard = () => {
   const chat = useChat();
   const [currentMessage, setCurrentMessage] = useState("");
   const [selectedChat, setSelectedChat] = useState(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const error = useSelector(state => state.auth.error);
+
+  const {handleLogout} = useAuth()
 
   const chats = useSelector((state) => state.chat.chats);
   const currentChatId = useSelector((state) => state.chat.currentChatId);
 
-  console.log(chats);
-  
+  // console.log(chats);
+
   useEffect(() => {
     chat.initialiseSocketConnection();
+    chat.handleGetChats();
   }, []);
-  
-  
+
   const handleSendMessage = () => {
     if (currentMessage.trim()) {
       // Add user message
-      chat.handleSendMessage({ message: currentMessage, chatId: currentChatId });
+      chat.handleSendMessage({
+        message: currentMessage,
+        chatId: currentChatId,
+      });
       setCurrentMessage("");
     }
   };
@@ -36,12 +44,21 @@ const Dashboard = () => {
     }
   };
 
-  const title = [
-    { id: 1, title: "Chat 1" },
-    { id: 2, title: "Chat 1" },
-    { id: 3, title: "Chat 1" },
-    { id: 4, title: "Chat 1" },
-  ];
+  const openChat = (chatId) => { 
+    // console.log(chats)
+    chat.handleOpenChat(chatId, chats);
+  };
+
+  const navigate = useNavigate();
+
+
+  const logoutUser = async () => {
+    const data = await handleLogout();
+    if(error){
+      console.log(error)
+    }
+    navigate("/");
+  } 
 
   return (
     <div className="flex h-screen bg-[#1c1c1c] text-neutral-200 font-sans selection:bg-teal-500/30 relative overflow-hidden">
@@ -54,10 +71,22 @@ const Dashboard = () => {
       <aside className="hidden md:flex w-64 bg-[#1c1c1c] border-r border-white/5 flex-col p-6 relative z-10">
         {/* Header */}
         <div className="mb-8 flex items-center gap-2">
-          <svg className="w-6 h-6 text-teal-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+          <svg
+            className="w-6 h-6 text-teal-500"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M13 10V3L4 14h7v7l9-11h-7z"
+            />
           </svg>
-          <h1 className="text-xl font-semibold tracking-tight text-white">Agentra AI</h1>
+          <h1 className="text-xl font-semibold tracking-tight text-white">
+            Agentra AI
+          </h1>
         </div>
 
         {/* New Chat Button */}
@@ -68,13 +97,18 @@ const Dashboard = () => {
 
         {/* title Section */}
         <div className="flex-1 overflow-y-auto">
-          <h2 className="text-sm font-semibold text-neutral-400 mb-3 px-2">chats</h2>
+          <h2 className="text-sm font-semibold text-neutral-400 mb-3 px-2">
+            chats
+          </h2>
           <div className="space-y-2">
-            {title.map((chat) => (
+            {Object.values(chats).map((chat) => (
               <button
                 key={chat.id}
-                onClick={() => setSelectedChat(chat.id)}
-                className={`w-full text-left px-3 py-3 rounded-xl transition border ${
+                onClick={() => {
+                  openChat(chat.id);
+                  setSelectedChat(chat.id);
+                }}
+                className={`w-full text-left px-3 py-3 rounded-xl transition border cursor-pointer ${
                   selectedChat === chat.id
                     ? "bg-white/10 text-white border-teal-500/50"
                     : "text-neutral-300 hover:bg-white/5 border-white/5 hover:border-white/10"
@@ -87,7 +121,9 @@ const Dashboard = () => {
         </div>
 
         {/* Logout Button */}
-        <button className="w-full flex items-center justify-center gap-2 bg-white/5 hover:bg-red-500/20 text-red-400 hover:text-red-300 py-3 px-4 rounded-xl transition border border-white/10 hover:border-red-500/30">
+        <button
+        onClick={logoutUser}
+         className="w-full flex items-center justify-center gap-2 bg-white/5 hover:bg-red-500/20 text-red-400 hover:text-red-300 py-3 px-4 rounded-xl transition border border-white/10 hover:border-red-500/30">
           <LogOut size={20} />
           Log Out
         </button>
@@ -102,15 +138,29 @@ const Dashboard = () => {
       )}
 
       {/* Mobile Sidebar */}
-      <aside className={`fixed left-0 top-0 h-full w-64 bg-[#1c1c1c] border-r border-white/5 flex flex-col p-6 z-40 transition-transform duration-300 md:hidden ${
-        isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-      }`}>
+      <aside
+        className={`fixed left-0 top-0 h-full w-64 bg-[#1c1c1c] border-r border-white/5 flex flex-col p-6 z-40 transition-transform duration-300 md:hidden ${
+          isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
+      >
         {/* Header */}
         <div className="mb-8 flex items-center gap-2">
-          <svg className="w-6 h-6 text-teal-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+          <svg
+            className="w-6 h-6 text-teal-500"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M13 10V3L4 14h7v7l9-11h-7z"
+            />
           </svg>
-          <h1 className="text-xl font-semibold tracking-tight text-white">Agentra AI</h1>
+          <h1 className="text-xl font-semibold tracking-tight text-white">
+            Agentra AI
+          </h1>
         </div>
 
         {/* New Chat Button */}
@@ -121,12 +171,17 @@ const Dashboard = () => {
 
         {/* title Section */}
         <div className="flex-1 overflow-y-auto">
-          <h2 className="text-sm font-semibold text-neutral-400 mb-3 px-2">title</h2>
+          <h2 className="text-sm font-semibold text-neutral-400 mb-3 px-2">
+            title
+          </h2>
           <div className="space-y-2">
-            {title.map((chat) => (
+            {Object.values(chats).map((chat) => (
               <button
                 key={chat.id}
-                onClick={() => setSelectedChat(chat.id)}
+                onClick={() => {
+                  openChat(chat.id);
+                  setSelectedChat(chat.id);
+                }}
                 className={`w-full text-left px-3 py-3 rounded-xl transition border ${
                   selectedChat === chat.id
                     ? "bg-white/10 text-white border-teal-500/50"
@@ -140,7 +195,9 @@ const Dashboard = () => {
         </div>
 
         {/* Logout Button */}
-        <button className="w-full flex items-center justify-center gap-2 bg-white/5 hover:bg-red-500/20 text-red-400 hover:text-red-300 py-3 px-4 rounded-xl transition border border-white/10 hover:border-red-500/30">
+        <button 
+        onClick={logoutUser}
+        className="w-full flex items-center justify-center gap-2 bg-white/5 hover:bg-red-500/20 text-red-400 hover:text-red-300 py-3 px-4 rounded-xl transition border border-white/10 hover:border-red-500/30">
           <LogOut size={20} />
           Log Out
         </button>
@@ -159,15 +216,29 @@ const Dashboard = () => {
         </div>
 
         {/* Messages Container */}
-        <div className="flex-1 overflow-y-auto p-8 space-y-4">
-          {Object.keys(chats).length === 0 ? (
+        <div className="message-container flex-1 overflow-y-auto p-8 space-y-4 w-full">
+          {!currentChatId || !chats[currentChatId]?.messages || chats[currentChatId].messages.length === 0 ? (
             <div className="flex items-center justify-center h-full">
               <div className="text-center">
-                <svg className="w-16 h-16 text-teal-500 mx-auto mb-4 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                <svg
+                  className="w-16 h-16 text-teal-500 mx-auto mb-4 opacity-50"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={1.5}
+                    d="M13 10V3L4 14h7v7l9-11h-7z"
+                  />
                 </svg>
-                <h2 className="text-3xl font-bold text-white mb-2">Agentra AI</h2>
-                <p className="text-neutral-400">Start a conversation to begin</p>
+                <h2 className="text-3xl font-bold text-white mb-2">
+                  Agentra AI
+                </h2>
+                <p className="text-neutral-400">
+                  Start a conversation to begin
+                </p>
               </div>
             </div>
           ) : (
@@ -177,13 +248,96 @@ const Dashboard = () => {
                 className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
               >
                 <div
-                  className={`max-w-lg px-5 py-3 rounded-xl backdrop-blur-sm transition ${
+                  className={`max-w-xxl px-5 py-3  backdrop-blur-sm transition ${
                     msg.role === "user"
-                      ? "bg-teal-500/20 text-white border border-teal-500/30 rounded-br-none "
-                      : "bg-white/5 text-neutral-100 border border-white/10 rounded-bl-none"
+                      ? "bg-teal-500/20 text-white border rounded-xl border-teal-500/30 rounded-br-none "
+                      : "text-neutral-100 border-white/10"
                   }`}
                 >
-                  {msg.content}
+                  {msg.role === "user" ? (
+                    msg.content
+                  ) : (
+                    <div className="markdown-content prose prose-invert max-w-none text-sm">
+                      <ReactMarkdown
+                        components={{
+                          p: ({ node, ...props }) => (
+                            <p className="mb-2 last:mb-0" {...props} />
+                          ),
+                          strong: ({ node, ...props }) => (
+                            <strong
+                              className="font-semibold text-teal-300"
+                              {...props}
+                            />
+                          ),
+                          em: ({ node, ...props }) => (
+                            <em
+                              className="italic text-neutral-300"
+                              {...props}
+                            />
+                          ),
+                          code: ({ node, ...props }) => (
+                            <code
+                              className="bg-black/40 px-1.5 py-0.5 rounded text-teal-200 font-mono text-xs"
+                              {...props}
+                            />
+                          ),
+                          pre: ({ node, ...props }) => (
+                            <pre
+                              className="bg-black/60 p-3 rounded-lg overflow-x-auto mb-2"
+                              {...props}
+                            />
+                          ),
+                          ul: ({ node, ...props }) => (
+                            <ul
+                              className="list-disc list-inside mb-2 space-y-1"
+                              {...props}
+                            />
+                          ),
+                          ol: ({ node, ...props }) => (
+                            <ol
+                              className="list-decimal list-inside mb-2 space-y-1"
+                              {...props}
+                            />
+                          ),
+                          li: ({ node, ...props }) => (
+                            <li className="ml-2" {...props} />
+                          ),
+                          blockquote: ({ node, ...props }) => (
+                            <blockquote
+                              className="border-l-4 border-teal-500/50 pl-3 italic text-neutral-300 mb-2"
+                              {...props}
+                            />
+                          ),
+                          h1: ({ node, ...props }) => (
+                            <h1
+                              className="text-lg font-bold mb-2 mt-2 text-teal-300"
+                              {...props}
+                            />
+                          ),
+                          h2: ({ node, ...props }) => (
+                            <h2
+                              className="text-base font-bold mb-2 mt-2 text-teal-300"
+                              {...props}
+                            />
+                          ),
+                          h3: ({ node, ...props }) => (
+                            <h3
+                              className="text-sm font-bold mb-1 mt-1 text-teal-300"
+                              {...props}
+                            />
+                          ),
+                          a: ({ node, ...props }) => (
+                            <a
+                              className="text-teal-400 hover:text-teal-300 underline"
+                              {...props}
+                            />
+                          ),
+                        }}
+                      >
+                        {msg.content}
+                      </ReactMarkdown>
+                    </div>
+                  )}
                 </div>
               </div>
             ))

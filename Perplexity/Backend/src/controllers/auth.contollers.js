@@ -183,3 +183,20 @@ export async function getMe(req, res) {
 export async function resendVerification(req, res) {
   
 }
+
+
+export async function logout(req, res) {
+  const token = req.cookies.token;
+
+  if(!token){
+    return res.status(400).json({
+      message: "No user logged in!"
+    })
+  }
+
+    res.clearCookie("token");
+
+  return res.status(200).json({
+    message: "Logged out successfully."
+  })
+}
