@@ -1,4 +1,4 @@
-import "dotenv/config"; 
+import "dotenv/config"
 
 /** 
  * GEMINI_API_KEY
