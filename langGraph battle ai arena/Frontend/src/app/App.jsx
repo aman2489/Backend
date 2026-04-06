@@ -3,8 +3,8 @@ import Header from "../components/Header";
 import ChatInput from "../components/ChatInput";
 import MessageItem from "../components/MessageItem";
 import EmptyState from "../components/EmptyState";
-import { chatResponse } from "../api/chat.api";
 import "./App.css";
+import axios from "axios";
 
 function App() {
   const [messages, setMessages] = useState([]);
@@ -43,15 +43,24 @@ function App() {
     setMessages((prev) => [...prev, newInteraction]);
 
     // Fetch API response
-    const responseData = await chatResponse(userMsg);
+    const response = await axios.post("http://localhost:3000/use-graph", {
+      input: newInteraction.problem 
+    })
+
+    const data = response.data;
+
+    console.log(data)
 
     setMessages((prev) =>
       prev.map((msg) => {
         if (msg.id === newInteraction.id) {
+          // Check if data is nested inside 'result', otherwise spread data directly
+          const apiData = data.result ? data.result : data;
+          
           return {
-            ...msg,
-            loading: false,
-            ...responseData // Spreading the imported mock API response object
+            ...msg, // 1. Keep the original id and problem
+            ...apiData, // 2. Add the solutions and judge from the API
+            loading: false, // 3. Set loading to false
           };
         }
         return msg;
