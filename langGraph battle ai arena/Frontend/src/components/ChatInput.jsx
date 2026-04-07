@@ -3,7 +3,7 @@ import { Send } from "lucide-react";
 
 export default function ChatInput({ input, setInput, handleSend }) {
   return (
-    <footer className="sticky bottom-0 z-10 px-6 py-4 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md border-t border-slate-200 dark:border-slate-800">
+    <footer className="sticky bottom-0 z-50 px-6 py-4 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md border-t border-slate-200 dark:border-slate-800">
       <div className="max-w-4xl mx-auto w-full relative group">
         <input
           type="text"
