@@ -43,7 +43,7 @@ function App() {
     setMessages((prev) => [...prev, newInteraction]);
 
     // Fetch API response
-    const response = await axios.post("http://localhost:3000/use-graph", {
+    const response = await axios.post("/use-graph", {
       input: newInteraction.problem 
     })
 
