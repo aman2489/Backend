@@ -3,7 +3,7 @@ import userModel from "../models/auth.model.js";
 import Config from "../config/config.js";
 
 
-async function sendTokenResponse(user, res){
+async function sendTokenResponse(user, res, message){
     const token = jwt.sign({
         id: user._id,
 
@@ -12,13 +12,14 @@ async function sendTokenResponse(user, res){
     res.cookie("jwt_token", token);
 
     return res.status(200).json({
-            message: "User registered secussfully.",
+            message: message,
             user: {
                 userId: user._id,
                 Fullname: user.fullname,
                 Email: user.email,
-                Contact: user.contact
-            }
+                Contact: user.contact,
+                Role: user.role
+            },
         })
 }
 
@@ -39,7 +40,7 @@ export async function register(req, res) {
             role: isSeller ? "seller" : "buyer"
         });
 
-        await sendTokenResponse(user, res);
+        await sendTokenResponse(user, res, "User registered successfully!!");
         
 
     }catch(error){
