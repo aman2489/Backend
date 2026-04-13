@@ -24,3 +24,11 @@ export const registerUserValidator = [
   body("isSeller").isBoolean().withMessage("isSeller should be boolean value."),
   validate
 ];
+
+export const loginUserValidator = [
+  body("email").isEmail().withMessage("Please provide a valid email address."),
+  body("password")
+    .isLength({ min: 6 })
+    .withMessage("Password mustbe atleast 6 charecters."),
+  validate
+]

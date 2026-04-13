@@ -49,3 +49,26 @@ export async function register(req, res) {
     }
 }
 
+export async function login(req,res) {
+    const {email, password} = req.body;
+
+    try{
+        const user = await userModel.findOne({email}).select("+password");
+
+        if(!user){
+            return res.status(404).json({message: "User not found with this email."});
+        }
+
+        const isMatch = await user.comparePassword(password);
+
+        if(!isMatch){
+            return res.status(401).json({message: "Invalid credentials."});
+        }
+
+        await sendTokenResponse(user, res, "User logged in successfully!!");
+    }catch(error){
+        console.log(error);
+        return res.status(500).json({message: "Server Error"});
+    }
+}
+
