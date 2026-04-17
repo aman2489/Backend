@@ -4,6 +4,7 @@ import useAuth from "../hooks/useAuth";
 import { useNavigate, Link } from "react-router";
 import { useSelector, useDispatch } from "react-redux";
 import { setError } from "../state/auth.slice";
+import ContinueWithGoogle from "../components/ContinueWithGoogle";
 
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -213,6 +214,7 @@ const Register = () => {
               >
                 Register
               </button>
+              <ContinueWithGoogle/>
 
               <p className="text-center text-[10px] font-label uppercase tracking-widest text-on-surface-variant mt-4">
                 Already a member?{" "}

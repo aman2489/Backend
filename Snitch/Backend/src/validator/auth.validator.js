@@ -1,4 +1,4 @@
-import { body, validationResult } from "express-validator";
+import { body, query, validationResult } from "express-validator";
 
 
 function validate(req, res, next){
@@ -32,3 +32,9 @@ export const loginUserValidator = [
     .withMessage("Password mustbe atleast 6 charecters."),
   validate
 ]
+
+// export const googleUserValidator = [
+//   query("code").notEmpty().withMessage("Authorization code is missing from the request.")
+//   .isString().withMessage("Invalid code format."),
+//   validate
+// ]

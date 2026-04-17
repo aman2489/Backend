@@ -72,3 +72,28 @@ export async function login(req,res) {
     }
 }
 
+export async function googleCallback(req, res) {
+
+    const {id, displayName, emails, photos} = req.user;
+    const email = emails[0].value;
+    const profilePic = photos[0].value;
+
+    let user = await userModel.findOne({email});
+
+    if(!user){
+       user = await userModel.create({
+        email,
+        googleId: id,
+        fullname: displayName,
+       })
+    }
+
+    const token = jwt.sign({
+        id: user._id,
+    }, Config.JWT_SECRET, {expiresIn: "3d"});
+
+    res.cookie("jwt_token", token);
+
+    res.redirect("http://localhost:5173/");
+}
+

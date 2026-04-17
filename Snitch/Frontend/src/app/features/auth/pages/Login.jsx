@@ -4,6 +4,7 @@ import useAuth from "../hooks/useAuth";
 import { useNavigate, Link } from "react-router";
 import { useSelector, useDispatch } from "react-redux";
 import { setError } from "../state/auth.slice";
+import ContinueWithGoogle from "../components/ContinueWithGoogle";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -143,6 +144,7 @@ const Login = () => {
                 </div>
               </div>
 
+
               {/* Login Button */}
               <button
                 className="w-full py-4 rounded-full bg-gradient-to-br from-[#E9C400] to-[#FFD700] text-[#3A3000] font-headline font-extrabold uppercase tracking-[0.2em] text-sm hover:opacity-90 active:scale-[0.98] transition-all duration-300 shadow-[0_20px_40px_rgba(233,196,0,0.15)] mt-4"
@@ -150,6 +152,7 @@ const Login = () => {
               >
                 Sign In
               </button>
+              <ContinueWithGoogle/>
 
               <p className="text-center text-[10px] font-label uppercase tracking-widest text-on-surface-variant mt-4">
                 Not a member yet?{" "}
