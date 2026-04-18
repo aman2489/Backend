@@ -17,7 +17,7 @@ productRouter.post("/", authenticateSeller, upload.array("images", 7), validateP
 
 productRouter.get("/seller", authenticateSeller, getSellerProducts);
 
-productRouter.get("/me", authenticateSeller, getSellerProducts);
+
 
 
 export default productRouter;

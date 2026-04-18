@@ -15,10 +15,10 @@ async function sendTokenResponse(user, res, message){
             message: message,
             user: {
                 userId: user._id,
-                Fullname: user.fullname,
-                Email: user.email,
-                Contact: user.contact,
-                Role: user.role
+                fullname: user.fullname,
+                email: user.email,
+                contact: user.contact,
+                role: user.role
             },
         })
 }
@@ -97,3 +97,21 @@ export async function googleCallback(req, res) {
     res.redirect("http://localhost:5173/");
 }
 
+export async function getMe(req, res) {
+    const user = req.user;
+
+    if(!user){
+        return res.status(404).json({message: "User not found!"});
+    }
+
+    return res.status(200).json({
+        message: "User retrieved successfully!",
+        user: {
+            userId: user._id,
+            fullname: user.fullname,
+            email: user.email,
+            contact: user.contact,
+            role: user.role
+        }
+    });
+}

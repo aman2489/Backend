@@ -30,6 +30,7 @@ const Login = () => {
   const handleFormSubmit = async (data) => {
     try {
       await handleLogin(data);
+      
       reset();
       navigate("/");
     } catch(err) {

@@ -1,8 +1,11 @@
-import { createBrowserRouter } from "react-router";
+import { createBrowserRouter, Navigate } from "react-router";
 import Register from "./app/features/auth/pages/Register";
 import Login from "./app/features/auth/pages/Login";
 import CreateProduct from "./app/features/products/pages/CreateProduct";
 import Dashboard from "./app/features/products/pages/Dashboard";
+import Protected from "./app/features/auth/components/Protected";
+
+
 
 
 export const router = createBrowserRouter([
@@ -23,11 +26,11 @@ export const router = createBrowserRouter([
         children: [
             {
                 path: "/seller/create-product",
-                element: <CreateProduct/>
+                element: <Protected role="seller"><CreateProduct/></Protected>
             },
             {
                 path: "/seller/dashboard",
-                element: <Dashboard/>
+                element: <Protected role="seller"><Dashboard/></Protected>
             }
         ]
     },

@@ -27,3 +27,12 @@ export async function login({email, password}) {
     }
 
 }
+
+export async function getMe() {
+    try{
+        const response = await api.get("/me");
+        return response.data;
+    }catch(error){
+        throw error?.response?.data?.message || "Error fetching user!"
+    }
+}
