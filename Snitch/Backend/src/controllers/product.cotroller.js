@@ -30,3 +30,23 @@ export async function createProduct(req, res) {
         product
     })
 }
+
+export async function getSellerProducts(req, res) {
+    const seller = req.user;
+
+    if(!seller) {
+        return res.status(404).json({message: "Seller not found!"});
+    }
+
+    try{
+        const products = await productModel.find({seller: seller._id});
+
+        return res.status(200).json({
+        message: products.length === 0 ? "No products found for this seller!" : "Products retrieved successfully!",
+        products
+    })
+    }catch(error){
+        console.log("Error fetching seller products: ",error);
+        return res.status(500).json({message: "Server Error"});
+    }
+}
