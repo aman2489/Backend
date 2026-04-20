@@ -29,10 +29,16 @@ const Login = () => {
   }, [error, dispatch]);
   const handleFormSubmit = async (data) => {
     try {
-      await handleLogin(data);
-      
+      const user = await handleLogin(data);
+      if(user.role == "buyer"){
+        navigate("/");
+      }else if(user.role == "seller"){
+        navigate("/seller/dashboard");
+      }else{
+        navigate("/login")
+      }
       reset();
-      navigate("/");
+      
     } catch(err) {
       console.log(err);
     }

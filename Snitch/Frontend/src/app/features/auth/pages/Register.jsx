@@ -29,9 +29,15 @@ const Register = () => {
   }, [error, dispatch]);
   const handleFormSubmit = async (data) => {
     try {
-      await handleRegister(data);
+      const user = await handleRegister(data);
+      if(user.role == "buyer"){
+        navigate("/");
+      }else if(user.role == "seller"){
+        navigate("/seller/dashboard");
+      }else{
+        navigate("/register")
+      }
       reset();
-      navigate("/");
     } catch (error) {
       console.log(error);
     }

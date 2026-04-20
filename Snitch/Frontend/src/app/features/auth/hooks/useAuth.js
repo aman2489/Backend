@@ -9,6 +9,7 @@ const useAuth = () => {
     try{
       const data = await register({email, password, contact, fullname, isSeller,});
       dispatch(setUser(data.user));
+      return data.user;
     }catch(error){
       dispatch(setError(error));
       throw error;
@@ -19,6 +20,7 @@ const useAuth = () => {
     try{
       const data = await login({email, password});
       dispatch(setUser(data.user));
+      return data.user;
     }catch(error){
       dispatch(setError(error));
       throw error;
