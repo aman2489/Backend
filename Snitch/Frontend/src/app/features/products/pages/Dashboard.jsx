@@ -37,12 +37,13 @@ const Dashboard = () => {
       {/* ── Navbar ── */}
       <nav className="shrink-0 flex items-center justify-between px-6 lg:px-8 py-4 border-b border-[#4D4732]/20">
         <div className="flex items-center gap-3">
-          <span
-            className="text-xl font-bold tracking-[-0.04em] text-[#E5E2E1]"
+          <Link
+            to="/"
+            className="text-xl font-bold tracking-[-0.04em] text-[#E5E2E1] hover:text-[#999077] transition-colors duration-200"
             style={{ fontFamily: "Manrope, sans-serif" }}
           >
             snitch<span className="text-[#FFD700]">.</span>
-          </span>
+          </Link>
           <span className="hidden sm:block text-[#4D4732]/60 text-xs select-none">
             |
           </span>

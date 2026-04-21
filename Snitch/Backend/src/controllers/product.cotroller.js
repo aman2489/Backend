@@ -50,3 +50,17 @@ export async function getSellerProducts(req, res) {
         return res.status(500).json({message: "Server Error"});
     }
 }
+
+export async function getAllProducts(req, res) {
+    try{
+        const products = await productModel.find()
+
+        return res.status(200).json({
+            message: products.length === 0 ? "No products found!" : "Products retrieved successfully!",
+            products
+        })
+    }catch(error){
+        console.log("Error fetching all products: ",error);
+        return res.status(500).json({message: "Server Error"});
+    }
+}

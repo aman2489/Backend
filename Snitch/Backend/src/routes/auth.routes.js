@@ -25,4 +25,7 @@ authRouter.get("/google/callback",
 
 authRouter.get("/me", authenticateUser, getMe);
 
+
+
+
 export default authRouter;

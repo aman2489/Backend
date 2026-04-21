@@ -14,3 +14,12 @@ export async function getSellerProducts() {
     const response = await api.get("/seller");
     return response.data;
 }
+
+export async function getAllProducts() {
+    try{
+        const response = await api.get("/");
+        return response.data;
+    }catch(error){
+        throw error?.response?.data?.message || "Error fetching products!";
+    }
+}

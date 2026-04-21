@@ -4,6 +4,7 @@ import Login from "./app/features/auth/pages/Login";
 import CreateProduct from "./app/features/products/pages/CreateProduct";
 import Dashboard from "./app/features/products/pages/Dashboard";
 import Protected from "./app/features/auth/components/Protected";
+import Home from "./app/features/products/pages/Home";
 
 
 
@@ -11,7 +12,7 @@ import Protected from "./app/features/auth/components/Protected";
 export const router = createBrowserRouter([
     {
         path: "/",
-        element: <h1>Hello World</h1>
+        element: <Home/>
     },
     {
         path: "/register",
