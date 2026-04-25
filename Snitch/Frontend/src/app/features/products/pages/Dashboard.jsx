@@ -1,11 +1,12 @@
 import { useEffect } from "react";
 import useProduct from "../hooks/useProduct";
 import { useSelector } from "react-redux";
-import { Link } from "react-router";
+import { Link, Navigate, useNavigate } from "react-router";
 
 const Dashboard = () => {
   const { handleGetSellerProducts } = useProduct();
   const products = useSelector((state) => state.product.sellerProducts);
+  const navigate = useNavigate();
 
   useEffect(() => {
     handleGetSellerProducts();
@@ -192,6 +193,7 @@ const Dashboard = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6">
             {products.map((product) => (
               <div
+              onClick={() => {navigate(`/seller/product/${product._id}`)}}
                 key={product._id}
                 className="group flex flex-col bg-[#0E0E0E] border border-[#4D4732]/20 rounded-xl overflow-hidden hover:border-[#999077]/50 transition-all duration-300"
               >
