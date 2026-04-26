@@ -3,6 +3,8 @@ import mongoose from "mongoose";
 const productSchema = new mongoose.Schema({
     title: {type: String, required: true},
     description: {type: String, required: true},
+    stock: {type: Number, default: 0},
+    attributes: {type: Map, of: String},
     seller: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "user",

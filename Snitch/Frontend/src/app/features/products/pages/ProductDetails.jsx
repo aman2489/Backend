@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useMemo } from "react"
 import useProduct from "../hooks/useProduct"
 import { useParams, Link } from "react-router";
 import { useSelector } from "react-redux";
@@ -8,6 +8,7 @@ const ProductDetails = () => {
     const {productId} = useParams();
     const [productDets, setProductDets] = useState(null);
     const [activeImage, setActiveImage] = useState(null);
+    const [selectedAttributes, setSelectedAttributes] = useState({});
     
     // For Navbar matching Home.jsx
     const user = useSelector((state) => state.auth.user);
@@ -15,6 +16,16 @@ const ProductDetails = () => {
     async function getProdDets() {
         const data = await handleGetProductDetails(productId)
         setProductDets(data);
+        
+        if (data?.variants?.length > 0) {
+            setSelectedAttributes(data.variants[0].attributes || {});
+            const firstVariantImages = data.variants[0].images;
+            if (firstVariantImages && firstVariantImages.length > 0) {
+                setActiveImage(firstVariantImages[0].url);
+                return;
+            }
+        }
+
         if (data?.images?.length > 0) {
             setActiveImage(data.images[0].url);
         }
@@ -24,18 +35,77 @@ const ProductDetails = () => {
         getProdDets()
     }, [productId]);
 
+    const currentVariant = useMemo(() => {
+        if (!productDets?.variants) return null;
+        return productDets.variants.find(v => {
+            return Object.keys(v.attributes || {}).every(key => v.attributes[key] === selectedAttributes[key]);
+        });
+    }, [productDets, selectedAttributes]);
+
+    const displayPrice = currentVariant?.price ?? productDets?.price;
+    const displayImages = (currentVariant?.images && currentVariant.images.length > 0) 
+        ? currentVariant.images 
+        : productDets?.images;
+
+    const attributeKeys = useMemo(() => {
+        if (!productDets?.variants) return [];
+        const keys = new Set();
+        productDets.variants.forEach(v => {
+            Object.keys(v.attributes || {}).forEach(k => keys.add(k));
+        });
+        return Array.from(keys);
+    }, [productDets]);
+
+    const getAttributeValues = (key) => {
+        if (!productDets?.variants) return [];
+        const values = new Set();
+        productDets.variants.forEach(v => {
+            if (v.attributes && v.attributes[key]) {
+                values.add(v.attributes[key]);
+            }
+        });
+        return Array.from(values);
+    };
+
+    const handleAttributeSelect = (key, value) => {
+        setSelectedAttributes(prev => {
+            const next = { ...prev, [key]: value };
+            const matchingVariant = productDets.variants.find(v => 
+                Object.entries(next).every(([k, vVal]) => !next[k] || v.attributes[k] === next[k])
+            );
+            
+            let finalAttributes = next;
+            if (!matchingVariant) {
+                const fallbackVariant = productDets.variants.find(v => v.attributes[key] === value);
+                if (fallbackVariant) {
+                    finalAttributes = fallbackVariant.attributes;
+                }
+            }
+            return finalAttributes;
+        });
+    };
+
+    useEffect(() => {
+        if (displayImages && displayImages.length > 0) {
+            const isCurrentValid = displayImages.some(img => img.url === activeImage);
+            if (!isCurrentValid) {
+                setActiveImage(displayImages[0].url);
+            }
+        }
+    }, [displayImages, activeImage]);
+
     const handleNextImage = () => {
-        if (!productDets?.images || productDets.images.length <= 1) return;
-        const currentIndex = productDets.images.findIndex((img) => img.url === activeImage);
-        const nextIndex = currentIndex === productDets.images.length - 1 ? 0 : currentIndex + 1;
-        setActiveImage(productDets.images[nextIndex].url);
+        if (!displayImages || displayImages.length <= 1) return;
+        const currentIndex = displayImages.findIndex((img) => img.url === activeImage);
+        const nextIndex = currentIndex === displayImages.length - 1 ? 0 : currentIndex + 1;
+        setActiveImage(displayImages[nextIndex].url);
     };
 
     const handlePrevImage = () => {
-        if (!productDets?.images || productDets.images.length <= 1) return;
-        const currentIndex = productDets.images.findIndex((img) => img.url === activeImage);
-        const prevIndex = currentIndex === 0 ? productDets.images.length - 1 : currentIndex - 1;
-        setActiveImage(productDets.images[prevIndex].url);
+        if (!displayImages || displayImages.length <= 1) return;
+        const currentIndex = displayImages.findIndex((img) => img.url === activeImage);
+        const prevIndex = currentIndex === 0 ? displayImages.length - 1 : currentIndex - 1;
+        setActiveImage(displayImages[prevIndex].url);
     };
 
     return (
@@ -107,7 +177,7 @@ const ProductDetails = () => {
                     <div className="flex-none lg:flex-1 flex flex-col-reverse justify-center lg:flex-row gap-4 lg:gap-6 lg:min-h-0 lg:h-full">
                          {/* Thumbnails Gallery */}
                          <div className="flex lg:flex-col gap-3 overflow-x-auto lg:overflow-y-auto w-full lg:w-24 shrink-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] pr-2 pb-2 lg:pb-0 snap-x">
-                            {productDets.images?.map((img) => (
+                            {displayImages?.map((img) => (
                                 <button 
                                     key={img._id} 
                                     onClick={() => setActiveImage(img.url)}
@@ -131,7 +201,7 @@ const ProductDetails = () => {
                                         alt={productDets.title} 
                                         className="absolute inset-0 w-full h-full object-cover lg:object-contain transition-opacity duration-500" 
                                     />
-                                    {productDets.images?.length > 1 && (
+                                    {displayImages?.length > 1 && (
                                         <>
                                             <button 
                                                 onClick={handlePrevImage}
@@ -176,12 +246,48 @@ const ProductDetails = () => {
                                 {productDets.title}
                             </h1>
                             <p className="text-xl lg:text-2xl font-inter text-[#FFD700] tracking-wide">
-                                {productDets.price?.currency === "INR" ? '₹' : productDets.price?.currency} {productDets.price?.amount?.toLocaleString()}
+                                {displayPrice?.currency === "INR" ? '₹' : displayPrice?.currency} {displayPrice?.amount?.toLocaleString()}
                             </p>
                         </div>
 
                         {/* Minimal Separator */}
                         <div className="w-16 h-px bg-[#4D4732]/50 shrink-0"></div>
+
+                        {/* Variant Selection */}
+                        {attributeKeys.length > 0 && (
+                            <div className="flex flex-col gap-4 shrink-0 mt-2 mb-2">
+                                {attributeKeys.map(key => (
+                                    <div key={key} className="flex flex-col gap-2">
+                                        <h3 className="text-xs font-inter tracking-[0.2em] uppercase text-[#999077] font-medium">
+                                            {key}
+                                        </h3>
+                                        <div className="flex flex-wrap gap-2">
+                                            {getAttributeValues(key).map(value => {
+                                                const isSelected = selectedAttributes[key] === value;
+                                                return (
+                                                    <button
+                                                        key={value}
+                                                        onClick={() => handleAttributeSelect(key, value)}
+                                                        className={`px-4 py-2 rounded-md text-sm font-medium transition-all duration-300 border ${
+                                                            isSelected
+                                                                ? "border-[#FFD700] text-[#FFD700] bg-[#FFD700]/10"
+                                                                : "border-[#4D4732] text-[#E5E2E1] hover:border-[#999077] hover:bg-[#1C1B1B]"
+                                                        }`}
+                                                    >
+                                                        {value}
+                                                    </button>
+                                                );
+                                            })}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+
+                        {/* Minimal Separator */}
+                        {attributeKeys.length > 0 && (
+                            <div className="w-16 h-px bg-[#4D4732]/50 shrink-0 mb-2"></div>
+                        )}
 
                         {/* Description */}
                         <div className="flex flex-col gap-3 shrink-0">
