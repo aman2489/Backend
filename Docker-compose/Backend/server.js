@@ -5,12 +5,13 @@ import morgan from 'morgan';
 const app = express();
 
 app.use(morgan('dev'));
+app.use(express.static('public'));
 
 app.get("/api/health",(req, res) => {
-    re.status(200).json({status: "OK"});
+    res.status(200).json({status: "OK"});
 })
 
-app.get("/aoi/hello", (req, res) => {
+app.get("/api/hello", (req, res) => {
     res.status(200).json({message: "Hello World"});
 })
 
@@ -21,6 +22,14 @@ app.get("/api/users", (req, res) => {
         {id: 3, name: "Jim Doe"},
     ]
     res.status(200).json({users});
+})
+
+app.get("/", (req, res) => {
+    res.sendFile("public/index.html", {root: __dirname});
+})
+
+app.get("*name", (req, res) => {
+    res.status(404).json({error: "Not Found"});
 })
 
 app.listen(3000, () => {
