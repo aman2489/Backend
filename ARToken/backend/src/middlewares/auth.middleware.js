@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const userModel = require("../models/user.model");
 
 
-const authMiddleware = (req, res, next) => {
+const authMiddleware = async (req, res, next) => {
     try{
         const accessToken = req.cookies.accessToken;
 
@@ -20,13 +20,15 @@ const authMiddleware = (req, res, next) => {
             });
         }
 
-        const user = userModel.findById(decode.id);
+        const user = await userModel.findById(decode.id);
 
         if(!user){
             res.status(404).json({
                 message: "User not found!"
             })
         }
+
+        console.log(user);
 
         req.user = user;
         next();

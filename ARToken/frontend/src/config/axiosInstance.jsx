@@ -1,17 +1,44 @@
 import axios from "axios";
 
 export const axiosInstance = axios.create({
-    baseURL: "https://fakestoreapi.com"
-})
+  baseURL: "http://localhost:3000",
+  withCredentials: true,
+});
 
-// axiosInstance.interceptors.request.use()
+// separate instance WITHOUT interceptor
+const refreshApi = axios.create({
+  baseURL: "http://localhost:3000",
+  withCredentials: true,
+});
 
 axiosInstance.interceptors.response.use(
-    (response) => {
-        console.log("axios instance response->", response.data);
-        return response;
-    },
-    (error) => {
-        console.log("error in instance", error);
+  (response) => response,
+
+  async (error) => {
+
+    const originalReq = error.config;
+
+    if (
+      error.response?.status === 401 &&
+      !originalReq._retry
+    ) {
+
+      originalReq._retry = true;
+
+      try {
+
+        // IMPORTANT:
+        // use refreshApi instead of axiosInstance
+        await refreshApi.get("/api/auth/get-accessToken");
+
+        return axiosInstance(originalReq);
+
+      } catch (err) {
+
+        return Promise.reject(err);
+      }
     }
-)
+
+    return Promise.reject(error);
+  }
+);
