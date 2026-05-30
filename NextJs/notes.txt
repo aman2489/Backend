@@ -1,0 +1,78 @@
+NEXT Js --> NextJs is a fullstack framework of React.
+Link to NextJs official Docs -> https://nextjs.org/docs
+
+Js -> React -> NextJs
+
+- Js had optimization problems
+- React gave SPA(Single Page Application) but no SEO and Optimization in it
+- NextJs
+    - SEO
+    - routing
+    - optimization
+    - suitable for full stack applications
+
+- Why NextJs: SEO -> Search Engine Optimization
+    - SEO depends on Google
+
+- Step to reach SEO:
+    There are infinite number of websites registered
+    1. Crawling -> google manages by crawling with bots: Goes on every webisites and figures out which website relies in which genre and then...
+
+    2. Indexing -> It indexes those websites according to genre, keywords, SEO , Delivery(SSR or CSR or ISR or SSG)
+
+    3. SEO -> and then these upper points decides your SEO
+        - It has google bots also been known as cert bots earlier
+        - Bots demands SSR first then demands other things then
+            - SSG(Static Site Generation) -> normal static HTML pages
+            - CSR(Client Side Rendering) -> React
+            - ISR(Increamental Site Regeneration)
+
+
+- Import for SEO
+    - SSR -> Google bots watches which website sends, renders data first sets on top.
+        - React -> Executes on Client(Browser)
+        - Next -> Executes all components on server
+    - Keywords
+    - and more things
+
+    - Depends in this order
+        1. Delivery
+        2. Keywords
+        3. optimization
+        4. Location
+        5. Reviews
+        6. Ratings and more...
+
+- Techniques to optimise search engine
+    - Server Side Component(SSC) or Server Side Rendering(SSR)
+
+- NextJs by default does SSC
+- React by deafult use CSC, but react does have SSC by we use NextJs
+
+NextJs --> 
+    - Routing -> 1. File based routing
+                 2. App router
+    
+    - Dynamic Routing
+    - Protected Routing
+    - Protected Routing
+    - Client Side components
+    - Server Side Components
+    - Image optimization
+    - Navigation links
+
+- App Router
+    - app folder in src means "/" route
+        - src/app -> Base route -> localhost:3000
+        - Everything starts from app
+        - folder is route and element is page.js
+        - folder means route(path) and the file in it named page.js is element
+
+Note - If i have get a component treated as client component in Next js i have to write on the very top "use client", bcz by daefault every component in next is server side component.
+
+- Nested Routing -> (/home/product)
+    - So to create the nested route we simply make a folder in the folder and make the page.js file as we were already doing in static routing
+    - so again the inner folder will be further route(path) and the the page.js will be element
+
+- Dynamic Routing -> (/home/:id)
+    - 
