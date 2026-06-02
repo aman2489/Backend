@@ -1,0 +1,70 @@
+# TYPESCRIPT
+
+- typescript -> It is not a framework nor a library nor a language
+
+- Typescript -> It is a static typed superset for JS
+
+- It implememts type checking in JS
+
+## Why Typescript
+- It solves lack of otimization and improves code quality
+- types checked during compile/transpile time
+
+## What is transpilor
+- converting or tranforming the HHL into another HLL(High Level Language) or LLL(Low Level Language)
+- Eg:- typescript for js, babel for jsx
+
+## How
+note - TypeScript never executes
+
+- source code -> process -> emitter -> js format -> browser
+  (---------TS----------)
+
+- Typescript works on top of JS
+
+- JS+TS -> process -> JS -> browser
+           (--TS--)
+
+Eg - let a: number = 10
+     a = "pol"     <- This will give an error: "cannot assign string to number"
+     console.log(a)
+
+
+# Behind the Scene of TS
+
+code -> lexer -> parser -> checker -> binder -> tranformer -> JS 
+      (scanner)   AST
+         (Abstract Syntax Tree)
+
+
+- Scanner or lexer -> scans the code and breaks into small chunks into tokens
+- parser -> makes a AST with the tokens 
+- binder -> binds the code(tokens)
+- checker -> checker what is correct what is not like if given number to a variable and does it holds number only or not
+- transformar -> converts old and new version parts of our code and transforms the best compatible code for JS so JS can understand the code and return files to js
+
+
+## Commands
+    - Make a folder
+    - npm i typescript --save-dev
+    - npm i @types/node --save-dev
+    - npm i ts-node --save-dev
+
+- For creating config file of ts
+    npx tsc -init
+
+- Type Inference and annotations
+    - Inference -> I will decide by myself which type to be given
+        - eg -> let a = 10 //type: number
+    - Annotations -> When we give type by ourselves
+        - eg -> let a: string = "dev" // type: string
+
+
+## Datatypes
+- Promitive Datatypes
+    - string
+    - boolean
+    - number
+    - null
+    - undefined
+    - symbol
