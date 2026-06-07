@@ -51,7 +51,7 @@ code -> lexer -> parser -> checker -> binder -> tranformer -> JS
     - npm i ts-node --save-dev
 
 - For creating config file of ts
-    npx tsc -init
+    npx tsc --init
 
 - Type Inference and annotations
     - Inference -> I will decide by myself which type to be given

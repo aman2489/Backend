@@ -1,0 +1,15 @@
+1. connection to mongoDb
+2. route setup
+3. types
+4. models
+5. middlewares
+6. pages -> auth, profile, resume
+
+
+## What do we need?
+- mongoDb
+- auth 
+- routes
+- jwt 
+- ai
+- profile
