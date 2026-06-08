@@ -1,0 +1,34 @@
+
+
+flow -> Day-2
+
+- create types for resume section
+    - resume categories
+        - personal info
+            - fullname
+            - email
+            - mobile
+            - location
+            - github 
+            - LinkedIn
+            - portfolio
+
+        - experience
+            - company
+            - position
+            - start date
+            - end date
+            - description
+
+        - projects
+            - title 
+            - description
+            - live LinkedIn
+            - github Link
+            - tech stack
+        
+        - education
+            - institute
+            - degree
+            - start date
+            - end date

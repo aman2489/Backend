@@ -45,7 +45,7 @@ export async function POST (req: NextRequest) {
                     emai: isExisted.email
                 }
             }
-        }, { status: 201 });
+        }, { status: 200 });
 
         response.cookies.set("token", token, {
             httpOnly: true,
